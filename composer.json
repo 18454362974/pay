@@ -9,6 +9,16 @@
             "email": "1597575273@qq.com"
         }
     ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "OsPay\\Pay\\OsPayServiceProvider"
+            ],
+            "aliases": {
+                "OsPay": "OsPay\\Pay\\OsPay"
+            }
+        }
+    },
     "minimum-stability": "dev",
     "require": {}
 }
