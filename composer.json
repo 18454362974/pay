@@ -1,0 +1,14 @@
+{
+    "name": "ospay/pay",
+    "description": "pay library",
+    "type": "library",
+    "license": "Haitao",
+    "authors": [
+        {
+            "name": "Hai Tao",
+            "email": "1597575273@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
