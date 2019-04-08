@@ -1,5 +1,5 @@
 {
-    "name": "ospay/pay",
+    "name": "ospay-lib/pay",
     "description": "pay library",
     "type": "library",
     "license": "Haitao",
