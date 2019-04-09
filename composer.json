@@ -9,6 +9,11 @@
             "email": "1597575273@qq.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "OsPay\\Pay\\": "pay/"
+        }
+    },
     "extra": {
         "laravel": {
             "providers": [
