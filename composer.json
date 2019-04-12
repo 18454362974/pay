@@ -2,8 +2,33 @@
     "name": "ospay-lib/pay",
     "description": "pay library",
     "type": "library",
-    "license": "Haitao",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hai Tao",
+            "email": "1597575273@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "OsPay\\Pay\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OsPay\\Pay\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "OsPay\\Pay\\OsPayServiceProvider"
+            ],
+            "aliases": {
+                "OsPay": "OsPay\\Pay\\OsPay"
+            }
+        }
+    },
     "minimum-stability": "dev",
     "require": {}
 }
- 
