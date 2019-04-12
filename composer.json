@@ -11,7 +11,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "OsPay\\Pay\\": "pay/"
+            "OsPay\\Pay\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OsPay\\Pay\\Tests\\": "tests/"
         }
     },
     "extra": {
