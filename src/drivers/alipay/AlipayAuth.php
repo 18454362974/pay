@@ -17,28 +17,28 @@ class AlipayAuth
 {
     
     protected $app;
-	protected $request;
-	protected $app_id;
-	protected $redirect_url;
-	protected $private_key;
-	protected $public_key;
+    protected $request;
+    protected $app_id;
+    protected $redirect_url;
+    protected $private_key;
+    protected $public_key;
 
-	// 请求地址
-	public $auth_url;
+    // 请求地址
+    public $auth_url;
 
     // 网关地址
     public $gateway;
 
     public function __construct($request, $config, $redirect_url)
     {
-    	$this->app = app();
-    	$this->request = $request;
-    	$this->app_id = $config['app_id'];
-    	$this->redirect_url = $config['redirect'];
-    	$this->private_key = $config['private_key'];
-        $this->public_key = $config['public_key'];
+        $this->app = app();
+        $this->request = $request;
+        $this->app_id = $config['app_id'];
+        $this->redirect_url = $config['redirect'];
+        $this->private_key = $config['merchant_private_key'];
+        $this->public_key = $config['alipay_public_key'];
         $this->auth_url = $config['auth_url'];
-    	$this->gateway = $config['gateway'];
+        $this->gateway = $config['gatewayUrl'];
         if (!defined("AOP_SDK_WORK_DIR"))
         {
             define("AOP_SDK_WORK_DIR", "/tmp/");
@@ -49,7 +49,7 @@ class AlipayAuth
     public function auth () 
     {
         // return new RedirectResponse('http://www.baidu.com');
-    	return redirect($this->auth_url());
+        return redirect($this->auth_url());
     }
 
     /**
@@ -61,7 +61,7 @@ class AlipayAuth
      */
     public function auth_url () 
     {
-    	return $this->auth_url . '/oauth2/publicAppAuthorize.htm?app_id=' . $this->app_id . '&scope=auth_user&redirect_uri=' . $this->redirect_url;
+        return $this->auth_url . '/oauth2/publicAppAuthorize.htm?app_id=' . $this->app_id . '&scope=auth_user&redirect_uri=' . $this->redirect_url;
     }
 
     /**
@@ -73,34 +73,34 @@ class AlipayAuth
      */
     public function callback () 
     {
-	  	$aop = new AopClient ();
-		$aop->gatewayUrl = $this->gateway;
-		$aop->appId = $this->app_id;
-		$aop->rsaPrivateKey = $this->private_key;
-		$aop->alipayrsaPublicKey= $this->public_key;
-		$aop->apiVersion = '1.0';
-		$aop->signType = 'RSA2';
-		$aop->postCharset ='UTF-8';
-		$aop->format ='json';
-		$request = new AlipaySystemOauthTokenRequest();
-		$request->setGrantType("authorization_code");
-		$request->setCode($this->app['request']->input('code'));
-		$request->setRefreshToken('');
-		$result = $aop->execute($request); 
-		$responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
-		if ($result->$responseNode) {
-			return $this->user_info($aop, $result->$responseNode->access_token);
-		}
+        $aop = new AopClient ();
+        $aop->gatewayUrl = $this->gateway;
+        $aop->appId = $this->app_id;
+        $aop->rsaPrivateKey = $this->private_key;
+        $aop->alipayrsaPublicKey= $this->public_key;
+        $aop->apiVersion = '1.0';
+        $aop->signType = 'RSA2';
+        $aop->postCharset ='UTF-8';
+        $aop->format ='json';
+        $request = new AlipaySystemOauthTokenRequest();
+        $request->setGrantType("authorization_code");
+        $request->setCode($this->app['request']->input('code'));
+        $request->setRefreshToken('');
+        $result = $aop->execute($request); 
+        $responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
+        if ($result->$responseNode) {
+            return $this->user_info($aop, $result->$responseNode->access_token);
+        }
     }
 
     public function user_info ($aop, $accessToken) {
-    	$request = new AlipayUserInfoShareRequest ();
-		$result = $aop->execute($request, $accessToken); 
+        $request = new AlipayUserInfoShareRequest ();
+        $result = $aop->execute($request, $accessToken); 
 
-		$responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
-		$resultCode = $result->$responseNode->code;
-		if (!empty($resultCode) && $resultCode == 10000) {
+        $responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
+        $resultCode = $result->$responseNode->code;
+        if (!empty($resultCode) && $resultCode == 10000) {
             return $result->$responseNode;
-		}
+        }
     }
 }
