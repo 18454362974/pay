@@ -3,6 +3,7 @@ namespace OsPay\Pay\Drivers\Alipay\Wappay\Service;
 
 use OsPay\Pay\Drivers\Alipay\Aop\Request\AlipayTradeWapPayRequest;
 use OsPay\Pay\Drivers\Alipay\Aop\AopClient;
+use OsPay\Pay\Drivers\Alipay\Aop\Request\AlipayTradeCreateRequest;
 
 /* *
  * 功能：支付宝手机网站alipay.trade.close (统一收单交易关闭接口)业务参数封装
@@ -94,6 +95,7 @@ class AlipayTradeService {
 		return $response;
 	}
 
+
 	 function aopclientRequestExecute($request,$ispage=false) {
 
 		$aop = new AopClient ();
@@ -161,6 +163,30 @@ class AlipayTradeService {
 	}
 
 	/**
+	 * alipay.trade.create (统一收单交易创建接口)
+	 * @param $builder 业务参数，使用buildmodel中的对象生成。
+	 * @return $response 支付宝返回的信息
+	 * @author _Haitao@追追网络
+	 */
+	function Create ($builder, $return_url, $notify_url) 
+	{
+		$biz_content=$builder->getBizContent();
+		//打印业务参数
+		$this->writeLog($biz_content);
+		$request = new AlipayTradeCreateRequest();
+
+		$request->setNotifyUrl($notify_url);
+		$request->setReturnUrl($return_url);
+		$request->setBizContent ( $biz_content );
+	
+		// 首先调用支付api
+		$response = $this->aopclientRequestExecute ($request);
+		$response = $response->alipay_trade_create_response;
+		// var_dump($response);
+		return $response;
+	}
+
+	/**
 	 * alipay.trade.close (统一收单交易关闭接口)
 	 * @param $builder 业务参数，使用buildmodel中的对象生成。
 	 * @return $response 支付宝返回的信息
@@ -175,7 +201,7 @@ class AlipayTradeService {
 		// 首先调用支付api
 		$response = $this->aopclientRequestExecute ($request);
 		$response = $response->alipay_trade_close_response;
-		var_dump($response);
+		// var_dump($response);
 		return $response;
 	}
 	

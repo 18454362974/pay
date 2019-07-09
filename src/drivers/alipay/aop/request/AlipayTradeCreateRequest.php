@@ -1,4 +1,6 @@
 <?php
+namespace OsPay\Pay\Drivers\Alipay\Aop\Request;
+
 /**
  * ALIPAY API: alipay.trade.create request
  *

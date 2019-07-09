@@ -88,8 +88,10 @@ class AlipayAuth
         $request->setRefreshToken('');
         $result = $aop->execute($request); 
         $responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
-        if ($result->$responseNode) {
+        if (isset($result->$responseNode)) {
             return $this->user_info($aop, $result->$responseNode->access_token);
+        } else {
+            dd($result);
         }
     }
 

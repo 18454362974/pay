@@ -1,20 +1,16 @@
 <?php
 namespace OsPay\Pay\Drivers\Alipay\Wappay\Buildermodel;
 
-/* *
- * 功能：支付宝手机网站支付接口(alipay.trade.wap.pay)接口业务参数封装
- * 版本：2.0
- * 修改日期：2016-11-01
- * 说明：
- * 以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
+/**
+ * alipay.trade.create(统一收单交易创建接口业务参数封装)
  */
-
-
-class AlipayTradeWapPayContentBuilder
+class AlipayTradeCreateContentBuilder
 {
-
-    // 订单描述，可以对交易或商品进行一个详细地描述，比如填写"购买商品2件共15.00元"
+	
+	// 订单描述，可以对交易或商品进行一个详细地描述，比如填写"购买商品2件共15.00元"
     private $body;
+
+    private $buyer_id;
 
     // 订单标题，粗略描述用户的支付目的。
     private $subject;
@@ -31,13 +27,7 @@ class AlipayTradeWapPayContentBuilder
     // 如果该字段为空，则默认为与支付宝签约的商户的PID，也就是appid对应的PID
     private $sellerId;
 
-    // 产品标示码，固定值：QUICK_WAP_WAY
-    private $productCode;
-
     private $bizContentarr = array();
-
-    // 公共回调参数
-    private $passbackParams;
 
     private $bizContent = NULL;
 
@@ -49,16 +39,6 @@ class AlipayTradeWapPayContentBuilder
         return $this->bizContent;
     }
 
-    public function __construct()
-    {
-        $this->bizContentarr['productCode'] = "QUICK_WAP_WAY";
-    }
-
-    public function AlipayTradeWapPayContentBuilder()
-    {
-        $this->__construct();
-    }
-
     public function getBody()
     {
         return $this->body;
@@ -68,6 +48,17 @@ class AlipayTradeWapPayContentBuilder
     {
         $this->body = $body;
         $this->bizContentarr['body'] = $body;
+    }
+
+    public function getBuyerId()
+    {
+        return $this->buyer_id;
+    }
+
+    public function setBuyerId($buyer_id)
+    {
+        $this->buyer_id = $buyer_id;
+        $this->bizContentarr['buyer_id'] = $buyer_id;
     }
 
     public function setSubject($subject)
@@ -125,17 +116,4 @@ class AlipayTradeWapPayContentBuilder
         return $this->sellerId;
     }
 
-    public function setPassbackParams ($passbackParams) 
-    {
-        $this->passbackParams = $passbackParams;
-        $this->bizContentarr['passback_params'] = $passbackParams;
-    }
-
-    public function getPassbackParams () 
-    {
-        return $this->passbackParams;
-    }
-
 }
-
-?>
